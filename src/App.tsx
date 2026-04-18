@@ -32,6 +32,7 @@ interface FormData {
   email: string;
   imei: string;
   company: string;
+  phoneModel: string;
 }
 
 const COMPANIES = [
@@ -52,6 +53,7 @@ export default function App() {
     email: '',
     imei: '',
     company: '',
+    phoneModel: '',
   });
   const [otp, setOtp] = useState('');
   const [sentOtp, setSentOtp] = useState('');
@@ -79,6 +81,9 @@ export default function App() {
     }
     if (formData.imei.length !== 15) {
       newErrors.imei = 'Exactly 15 digits required.';
+    }
+    if (!formData.phoneModel.trim()) {
+      newErrors.phoneModel = 'Phone model is required.';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -136,6 +141,7 @@ export default function App() {
       `> PHONE  : ${formData.phone}`,
       `> EMAIL  : ${formData.email}`,
       `> IMEI   : ${formData.imei}`,
+      `> MODEL  : ${formData.phoneModel}`,
       "------------------------------------",
       "Establishing Bootloader Tunnel...",
       "Status: CONNECTION SECURE",
@@ -317,6 +323,21 @@ export default function App() {
                 </div>
 
                 <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Phone Model</label>
+                  <div className="relative">
+                    <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                    <input 
+                      type="text"
+                      placeholder="e.g. Tecno, Samsung, Nokia..."
+                      value={formData.phoneModel}
+                      onChange={(e) => setFormData(prev => ({ ...prev, phoneModel: e.target.value }))}
+                      className="w-full bg-black/20 border-b-2 border-gray-600 focus:border-blue-500 p-4 pl-12 text-lg outline-none transition-colors"
+                    />
+                  </div>
+                  {errors.phoneModel && <p className="text-red-500 text-xs flex items-center gap-1"><AlertCircle className="w-3 h-3" /> {errors.phoneModel}</p>}
+                </div>
+
+                <div className="space-y-2">
                   <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">IMEI Code</label>
                   <div className="relative">
                     <Cpu className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
@@ -450,7 +471,7 @@ export default function App() {
                     <p>SN:R92FR6001TS</p>
                     <p>TA-1604F/DS®</p>
                     <p>C++Syntax {formData.company} Inc.</p>
-                    <p>Samsung A 06 Module ®©°°.</p>
+                    <p>{formData.phoneModel} A 06 Module ®©°°.</p>
                     <p>Uncoding successful.</p>
                     <p>go to =if(h°g°y:yy:665")¤¤ module</p>
                     <p>Tracker removed successfully.</p>
